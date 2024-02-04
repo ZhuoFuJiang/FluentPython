@@ -3,26 +3,19 @@ import reprlib
 from collections import abc
 
 
-# 匹配数字、字母、下划线
 RE_WORD = re.compile('\w+')
 
 
 class Sentence:
     def __init__(self, text):
         self.text = text
-        self.words = RE_WORD.findall(text)
-
-    def __getitem__(self, index):
-        return self.words[index]
-
-    def __len__(self):
-        return len(self.words)
 
     def __repr__(self):
         return 'Sentence(%s)' % reprlib.repr(self.text)
 
-    # def __iter__(self):
-    #     pass
+    def __iter__(self):
+        # 返回的还是一个生成器对象
+        return (word.group() for word in re.finditer(RE_WORD, self.text))
 
 
 if __name__ == "__main__":
